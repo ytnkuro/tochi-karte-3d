@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>土地カルテ3D</title>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="./">土地カルテ3D</a>
+  <form id="search" role="search">
+    <input id="q" type="search" placeholder="住所・地名で検索（例：江戸川区役所）" autocomplete="off">
+    <ul id="results" hidden></ul>
+  </form>
+  <a class="doclink" href="docs/design.html">設計書</a>
+</header>
+
+<div id="map"></div>
+
+<aside id="layers" class="panel">
+  <h2>レイヤー</h2>
+  <fieldset>
+    <legend>ベースマップ</legend>
+    <label><input type="radio" name="base" value="pale" checked> 淡色地図</label>
+    <label><input type="radio" name="base" value="std"> 標準地図</label>
+    <label><input type="radio" name="base" value="photo"> 航空写真</label>
+  </fieldset>
+  <fieldset>
+    <legend>ハザード（重ねるハザードマップ）</legend>
+    <label><input type="checkbox" data-layer="flood" checked> 洪水（想定最大規模）</label>
+    <label><input type="checkbox" data-layer="hightide"> 高潮</label>
+    <label><input type="checkbox" data-layer="tsunami"> 津波</label>
+    <label><input type="checkbox" data-layer="dosekiryu"> 土石流 警戒区域</label>
+    <label><input type="checkbox" data-layer="kyukeisha"> 急傾斜地 警戒区域</label>
+    <label><input type="checkbox" data-layer="jisuberi"> 地すべり 警戒区域</label>
+  </fieldset>
+  <fieldset>
+    <legend>地形</legend>
+    <label><input type="checkbox" data-layer="lcmfc"> 治水地形分類図</label>
+    <label><input type="checkbox" data-layer="hillshade" checked> 陰影起伏</label>
+    <label class="range">高さ強調 <input id="exag" type="range" min="1" max="3" step="0.5" value="1.5"> <output id="exagv">1.5×</output></label>
+  </fieldset>
+  <div class="legend" aria-label="浸水深の凡例">
+    <span style="background:#f7f5a9">〜0.5</span><span style="background:#ffd8c0">〜3</span><span style="background:#ffb7b7">〜5</span><span style="background:#ff9191">〜10</span><span style="background:#f285c9">〜20</span><span style="background:#dc7adc">20m〜</span>
+  </div>
+</aside>
+
+<aside id="karte" class="panel" hidden>
+  <button id="close" class="close" aria-label="閉じる">×</button>
+  <h2>土地カルテ</h2>
+  <p id="addr" class="muted"></p>
+  <dl id="items"></dl>
+  <p class="note">区域外でも「リスクがない」とは限りません。想定の対象外の中小河川や内水氾濫がありえます。必ず市町村のハザードマップもご確認ください。</p>
+  <button id="share" class="btn">このカルテのURLをコピー</button>
+</aside>
+
+<footer class="credit">
+  出典：<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank" rel="noopener">地理院タイル</a>・<a href="https://disaportal.gsi.go.jp/" target="_blank" rel="noopener">ハザードマップポータルサイト</a>。本サイトは公開データを重ねて表示したもので、公式のハザードマップや重要事項説明に代わるものではありません。
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
